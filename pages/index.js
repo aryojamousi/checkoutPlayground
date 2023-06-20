@@ -40,10 +40,16 @@ function sortXML(xml) {
         {}
       );
     });
-
-    // Convert the result back to XML
+    var sortedXmlText = {};
+    Object.keys(result.message)
+    .sort()
+    .forEach(function(v, i) {
+        sortedXmlText[v] = result.message[v];
+     });
+  
+     // Convert the result back to XML
     const builder = new xml2js.Builder();
-    const reversedXmlData = builder.buildObject(result);
+    const reversedXmlData = builder.buildObject(sortedXmlText);
     sorted = reversedXmlData;
   });
   return sorted;
@@ -57,18 +63,19 @@ export default function Home() {
       <main style={{ display: 'flex'}}>
         <div className={styles.xml}>
           Input Xml 
-          <textarea style={{ width: 200, height: 500 }} id="xmlText" />
+          <textarea style={{ width: 500, height: 500 }} id="xmlText" />
           <button onClick={() => setSortedValue(sortXML(document.getElementById('xmlText').value))} >Sort</button>
         </div>
         <div className={styles.xml}>
           Sorted Xml 
-          <textarea value={sortedValue} readOnly style={{ width: 200, height: 500 }} id="sortedXmlText"/>
+          <textarea value={sortedValue} readOnly style={{ width: 500, height: 500 }} id="sortedXmlText"/>
           <button onClick={() => {
             setSortedValue(sortXML(document.getElementById('xmlText').value));
             navigator.clipboard.writeText(sortXML(document.getElementById('xmlText').value))
           }}>Sort and copy to clipboard</button>
         </div>
       </main>
+      <div style={{ flex: 1 }}>Version: 0.0.1</div>
     </div>
   )
 }
