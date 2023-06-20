@@ -1,7 +1,7 @@
-import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import xml2js from 'xml2js';
 import { useState } from 'react';
+import { DiffEditor } from "@monaco-editor/react";
 
 function compare( a, b ) {
   if (!a.artname) {
@@ -18,6 +18,13 @@ function compare( a, b ) {
   }
   return 0;
 }
+function sortShippingInTheBeginning( a, b ) {
+  if (a.type[0] === 'porto' || b.type[0] === 'porto'){
+    return -1;
+  }
+
+  return 0;
+}
 
 // Path to the XML file
 function sortXML(xml) {
@@ -31,6 +38,7 @@ function sortXML(xml) {
     }
 
     result.message.item.sort(compare);
+    result.message.item.sort(sortShippingInTheBeginning);
     result.message.item.forEach((element, index) => {
       result.message.item[index] = Object.keys(result.message.item[index]).sort().reduce(
         (obj, key) => { 
@@ -75,6 +83,12 @@ export default function Home() {
           }}>Sort and copy to clipboard</button>
         </div>
       </main>
+      <h2>DIFF EDITOR!</h2>
+      <DiffEditor
+        options={{ originalEditable: true }}
+        height="80vh"
+        theme="vs-dark"
+      />
       <div style={{ flex: 1 }}>Version: 0.0.1</div>
     </div>
   )
