@@ -66,20 +66,23 @@ function sortXML(xml) {
 export default function Home() {
   const [sortedValue, setSortedValue] = useState('');
   
+  const getSortedXmlValueFromInput = () => sortXML((document.getElementById('xmlText') as HTMLInputElement).value);
+
   return (
     <div className={styles.container}>
       <main style={{ display: 'flex'}}>
         <div className={styles.xml}>
           Input Xml 
           <textarea style={{ width: 500, height: 500 }} id="xmlText" />
-          <button onClick={() => setSortedValue(sortXML(document.getElementById('xmlText').value))} >Sort</button>
+          <button onClick={() => setSortedValue(getSortedXmlValueFromInput())} >Sort</button>
         </div>
         <div className={styles.xml}>
           Sorted Xml 
           <textarea value={sortedValue} readOnly style={{ width: 500, height: 500 }} id="sortedXmlText"/>
           <button onClick={() => {
-            setSortedValue(sortXML(document.getElementById('xmlText').value));
-            navigator.clipboard.writeText(sortXML(document.getElementById('xmlText').value))
+            const sorted = getSortedXmlValueFromInput();
+            setSortedValue(sorted);
+            navigator.clipboard.writeText(sorted);
           }}>Sort and copy to clipboard</button>
         </div>
       </main>
