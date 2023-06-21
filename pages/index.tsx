@@ -36,6 +36,9 @@ function sortXML(xml) {
       console.error('Error parsing XML:', err);
       return;
     }
+    if (result === null) {
+      return;
+    }
 
     result.message.item.sort(compare);
     result.message.item.sort(sortShippingInTheBeginning);
@@ -64,30 +67,32 @@ function sortXML(xml) {
 };
 
 export default function Home() {
-  const [sortedValue, setSortedValue] = useState('');
+  const [ncXMLSortedValue, setNcXMLSortedValue] = useState('');
+  const [checkoutServiceSortedValue, setCheckoutServiceSortedValue] = useState('');
   
-  const getSortedXmlValueFromInput = () => sortXML((document.getElementById('xmlText') as HTMLInputElement).value);
+  const getSortedXmlValueFromInput = (elementId) => sortXML((document.getElementById(elementId) as HTMLInputElement).value);
+
+  const onChange = () => {
+    setNcXMLSortedValue(getSortedXmlValueFromInput('xmlText'));
+    setCheckoutServiceSortedValue(getSortedXmlValueFromInput('sortedXmlText'));
+  };
 
   return (
     <div className={styles.container}>
       <main style={{ display: 'flex'}}>
         <div className={styles.xml}>
-          Input Xml 
-          <textarea style={{ width: 500, height: 500 }} id="xmlText" />
-          <button onClick={() => setSortedValue(getSortedXmlValueFromInput())} >Sort</button>
+          Old NC XML
+          <textarea style={{ width: 500, height: 100 }} id="xmlText" onChange={onChange} />
         </div>
         <div className={styles.xml}>
-          Sorted Xml 
-          <textarea value={sortedValue} readOnly style={{ width: 500, height: 500 }} id="sortedXmlText"/>
-          <button onClick={() => {
-            const sorted = getSortedXmlValueFromInput();
-            setSortedValue(sorted);
-            navigator.clipboard.writeText(sorted);
-          }}>Sort and copy to clipboard</button>
+          Checkout Service XML
+          <textarea onChange={onChange} style={{ width: 500, height: 100 }} id="sortedXmlText"/>
         </div>
       </main>
       <h2>DIFF EDITOR!</h2>
       <DiffEditor
+        original={ncXMLSortedValue}
+        modified={checkoutServiceSortedValue}
         options={{ originalEditable: true }}
         height="80vh"
         theme="vs-dark"
