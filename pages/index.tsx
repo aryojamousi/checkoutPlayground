@@ -2,7 +2,7 @@ import styles from '../styles/Home.module.css';
 import xml2js from 'xml2js';
 import { useState } from 'react';
 import { DiffEditor } from "@monaco-editor/react";
-const EXCLUDING_TAGS = ['CCBrand', 'CCExpiry', 'PCNr', 'brandcheck', 'cgi_ssl', 'cmuid_cookie', 'comment/> --> if emp', 'init_referer', 'eci', 'mobile', 'pagecoun', 'url_pag', 'url_parms', 'url_subpage', 'utf', 'zone'];
+const EXCLUDING_TAGS = ['CCBrand', 'CCExpiry', 'PCNr', 'brandcheck', 'cgi_ssl', 'cmuid_cookie', 'init_referer', 'eci', 'mobile', 'pagecount', 'url_page', 'url_parms', 'url_subpage', 'utf8', 'zone'];
 
 function compare( a, b ) {
   if (!a.artname) {
